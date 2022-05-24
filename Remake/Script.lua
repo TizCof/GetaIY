@@ -4446,6 +4446,7 @@ CMDs[#CMDs + 1] = {NAME = 'creatorid / creator', DESC = 'Notifies you the creato
 CMDs[#CMDs + 1] = {NAME = 'copycreatorid / copycreator', DESC = 'Copies the creators ID to your clipboard'}
 CMDs[#CMDs + 1] = {NAME = 'setcreatorid / setcreator', DESC = 'Sets your userid to the creators ID'}
 CMDs[#CMDs + 1] = {NAME = 'noprompts', DESC = 'Prevents the game from showing you purchase/premium prompts'}
+CMDs[#CMDs + 1] = {NAME = 'copycframe', DESC = 'Set clipboard your cframe'}
 CMDs[#CMDs + 1] = {NAME = 'showprompts', DESC = 'Allows the game to show purchase/premium prompts again'}
 CMDs[#CMDs + 1] = {NAME = 'enable [inventory/playerlist/chat/all]', DESC = 'Toggles visibility of coregui items'}
 CMDs[#CMDs + 1] = {NAME = 'disable [inventory/playerlist/chat/all]', DESC = 'Toggles visibility of coregui items'}
@@ -9918,6 +9919,19 @@ addcmd('getposition',{'getpos','notifypos','notifyposition'},function(args, spea
 	end
 end)
 
+addcmd('copycframe',{'copycfr'},function(args, speaker)
+	local players = getPlayer(args[1], speaker)
+	for i,v in pairs(players)do
+		local char = Players[v].Character
+		local pos = char and (getRoot(char) or char:FindFirstChildWhichIsA("BasePart"))
+		pos = pos and pos.CFrame
+		if not pos then
+			return notify('GetCFrame Error','Missing character')
+		end
+		local roundedPos = math.round(pos.X) .. ", " .. math.round(pos.Y) .. ", " .. math.round(pos.Z)
+		toClipboard(roundedPos)
+	end
+end)
 addcmd('copyposition',{'copypos'},function(args, speaker)
 	local players = getPlayer(args[1], speaker)
 	for i,v in pairs(players)do
